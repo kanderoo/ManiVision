@@ -9,6 +9,8 @@ def nothing(x):
 
 
 cap = cv2.VideoCapture(0)
+cap.set(3,360)
+cap.set(4,240)
 cv2.namedWindow('sliders')
 cv2.createTrackbar('hL', 'sliders', 0, 255, nothing)
 cv2.createTrackbar('sL', 'sliders', 0, 255, nothing)
@@ -25,7 +27,6 @@ cv2.createTrackbar('readFromFile', 'sliders', 0, 1, nothing)
 while 1:
     # Take each frame
     _, frame = cap.read()
-
     # Convert BGR to HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -62,7 +63,6 @@ while 1:
             line_count = 0
             for row in csv_reader:
                 if line_count == 0:
-                    print(f'Column names are {", ".join(row)}')
                     line_count += 1
                 else:
                     lower_blue[(0)] = int(row[0])
@@ -86,9 +86,11 @@ while 1:
         x, y, w, h = cv2.boundingRect(contours[0])
         centerX = x + (w / 2)
         centerY = y + (h / 2)
+        cubeArea = w * h
         # cv2.putText(frame, centerX, org, FONT_HERSHEY_SIMPLEX, (255, 0, 255));
         VisionTables.sendX(centerX)
         VisionTables.sendY(centerY)
+        VisionTavles.sendArea(cubeArea)
     except:
         print("Exception: You're probably an idiot (Formerly: Mani is doodoo")
     cv2.imshow('mask', dilation)

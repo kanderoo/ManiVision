@@ -5,22 +5,20 @@ connected = False
 
 def connectionListener(connected, info):
         print(info, '; Connected=%s' % connected)
-        connected = True
 
 
 def sendX(x):
-    if connected:
-        sd.visionY = x
-    else:
-        print("Waiting for connection")
+    sd.putNumber('visionX', x)
+    print("visionX" + str(x))
+
 
 def sendY(y):
-    if connected:
-        sd.visionY = y
-    else:
-        print("Waiting for connection")
+        sd.putNumber('visionY', y)
 
-NetworkTables.initialize(server='10.33.24.2')
+def sendArea(area):
+    sd.putNumber('visionArea', area)
+
+NetworkTables.initialize(server='10.33.24.101')
 NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
 sd = NetworkTables.getTable("SmartDashboard")
 
